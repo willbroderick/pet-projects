@@ -1,0 +1,386 @@
+/* 
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com 
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+/* Clearfix */
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    }
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+/* Cool box-sizing - works fine >= IE8 */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.8em;
+    font-weight: 400;
+    background: url(gfx/pagebg.jpg);
+    padding-bottom: 50px;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Ceviche+One);
+
+h1 {
+	font-family: 'Ceviche One', cursive;
+	font-size: 20px;
+	color: #fff;
+    display: inline-block;
+    margin-right: 100px;
+}
+
+
+body > header {
+	padding:0 50px;
+    height: 35px;
+    line-height: 35px;
+
+	background: rgb(122,188,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(122,188,255,1) 0%, rgba(96,171,248,1) 44%, rgba(52,120,193,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122,188,255,1)), color-stop(44%,rgba(96,171,248,1)), color-stop(100%,rgba(52,120,193,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#3478c1',GradientType=0 ); /* IE6-9 */
+}
+
+body > footer {
+	color: #fff;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	padding: 5px 50px;
+	background: rgb(125,126,125);
+	background: -moz-linear-gradient(top,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(100%,rgba(14,14,14,1)));
+	background: -webkit-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
+	background: -o-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
+	background: linear-gradient(to bottom,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 );
+}
+
+body > header > * {
+    vertical-align: top;
+}
+
+#destroybox {
+    display: inline-block;
+    height: 100%;
+    width: 100px;
+    background: #000;
+    color: #600;
+    text-align: center;
+}
+
+#destroybox.hover {
+    background: #900;
+    color: #f00;
+}
+
+#list-listing,
+#item-new,
+#list-listing .list,
+#list-canvas .list-detail {
+    border: 1px solid #999;
+    margin:3px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#side-group {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 280px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+#item-new {
+    padding: 7px;
+    margin-bottom: 20px;
+}
+
+#item-new textarea {
+    display: block;
+    width:218px;
+    min-width:218px;
+    max-width:218px;
+    margin-right:40px;
+    min-height: 36px;
+}
+
+#item-new .actions {
+    float:right;
+    width:40px;
+}
+
+#item-new .actions .dragme {
+    width: 32px;
+    height: 32px;
+    padding-top: 32px;
+    background-size: 32px 32px;
+}
+
+#list-listing {
+}
+
+#list-listing .list {
+    clear: both;
+    padding: 7px;
+    line-height: 20px;
+}
+
+#list-listing .list header {
+    margin-right:100px;
+}
+
+#list-listing .list .actions {
+    float: right;
+    width:80px;
+}
+
+#list-canvas {
+    margin-top: 20px;
+    margin-left: 310px;
+}
+
+#list-canvas .list-detail {
+    float: left;
+    width: 300px;
+    line-height: 20px;
+}
+
+#list-canvas .list-detail .title {
+    margin-right: 76px;
+    padding: 7px;
+}
+
+#list-canvas .list-detail .list-item {
+    border-top: 1px solid #aaa;
+    clear:both;
+
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba(237,237,237,1)));
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%);
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%);
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+}
+
+#list-canvas .list-detail .list-item.ticked {
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(208,229,209,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba(208,229,209,1)));
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(208,229,209,1) 100%);
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(208,229,209,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(208,229,209,1) 100%);
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(208,229,209,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d0e5d1',GradientType=0 );
+}
+
+#list-canvas .list-detail .addingtemp {
+    clear: both;
+    border-top: 1px solid #aaa;
+    color: #AAAAAA;
+    padding: 7px;
+    background: rgb(201,201,201);
+    background: -moz-linear-gradient(top,  rgba(201,201,201,1) 0%, rgba(234,234,234,1) 5%, rgba(234,234,234,1) 95%, rgba(214,214,214,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(201,201,201,1)), color-stop(5%,rgba(234,234,234,1)), color-stop(95%,rgba(234,234,234,1)), color-stop(100%,rgba(214,214,214,1)));
+    background: -webkit-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(234,234,234,1) 5%,rgba(234,234,234,1) 95%,rgba(214,214,214,1) 100%);
+    background: -o-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(234,234,234,1) 5%,rgba(234,234,234,1) 95%,rgba(214,214,214,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(234,234,234,1) 5%,rgba(234,234,234,1) 95%,rgba(214,214,214,1) 100%);
+    background: linear-gradient(to bottom,  rgba(201,201,201,1) 0%,rgba(234,234,234,1) 5%,rgba(234,234,234,1) 95%,rgba(214,214,214,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#d6d6d6',GradientType=0 );
+}
+
+#list-canvas .list-detail .list-item content {
+    padding: 7px;
+    display: block;
+    margin-right: 76px;
+}
+
+#list-canvas .list-detail .list-item content .ext-img {
+    width: 100%;
+}
+
+#list-canvas .list-detail .actions {
+    float: right;
+    width:76px;
+    padding: 6px 5px 0 0;
+}
+
+.actions {
+    text-align: right;
+}
+
+.actions > * {
+    display: inline-block;
+    width: 20px;
+    height: 0px;
+    padding-top: 20px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.actions .close {
+    background: url(gfx/close.png) no-repeat center center;
+    background-size: 20px 20px;
+}
+
+.actions .dragme {
+    background: url(gfx/cursor_drag_hand.png) no-repeat center center;
+    background-size: 20px 20px;
+}
+
+.actions .tick {
+    background: url(gfx/tick_unticked.png) no-repeat center center;
+    background-size: 16px 16px;
+}
+
+.ticked .actions .tick {
+    background: url(gfx/tick_ticked.png) no-repeat center center;
+}
+
+.actions .comments {
+    background: url(gfx/comments.png) no-repeat center center;
+    background-size: 20px 20px;
+    opacity: 0.5;
+}
+
+.actions .comments:hover {
+    opacity: 1;
+}
+
+.actions .delete {
+    background: url(gfx/delete.png) no-repeat center center;
+    background-size: 20px 20px;
+}
+
+.actions .expand {
+    background: url(gfx/expand_item.png) no-repeat center center;
+    background-size: 20px 20px;
+}
+
+.ui-draggable {
+    background: #fff;
+    box-shadow: 0 1px 2px #333;
+}
+
+.ui-draggable-dragging {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+
+

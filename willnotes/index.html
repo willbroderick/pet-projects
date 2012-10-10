@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>'Scrummptious' or some other misspelled stupid hipster name</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="jquery-ui-1.8.24.custom.min.js"></script>
+	<script type="text/javascript" src="jquery.textarea-expander.js"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+<!--
+	TODO:
+
+	You have your precious local copy. Duplicate this in a cookie in case of browser death? This can be updated in realtime.
+
+	NEVER overwrite the savefile unless modified is greater than the currently-saved modified time.
+	If collisions detected, load and show new items in your display - faded with CSS maybe to indicate they are new.
+	So by default, new things are added to your array of items, and a successive save will 
+	merge everything in an additive manner.
+
+	Save upon every action, but don't do more than 1 save in any 10 seconds.
+	Show in the top-right if all of your changes have been saved - e.g. you can close your window now.
+-->
+	<header>
+		<h1>Willnotes</h1>
+		<div id="destroybox">DESTROY</div>
+	</header>
+	<div id="side-group">
+		<section id="item-new">
+			<header><h2>New list item</h2></header>
+			<content>
+				<div class="actions"><div class="dragme new-list-item-draggable">Drag me to an input</div></div>
+				<textarea id="newitemtext" class="expand2-200"></textarea>
+			</content>
+		</section>
+		<section id="list-listing">
+			<header>
+				<h2>Lists</h2>
+				<button id="new-list">New list</button>
+			</header>
+			<content></content>
+		</section>
+	</div>
+
+	<section id="list-canvas" class="clearfix">
+		<header>Opened lists</header>
+		<content></content>
+	</section>
+	
+	<footer>Copyright, yo</footer>
+
+<script id="list-template" type="text/template">
+<div class="list" data-id="[id]">
+	<div class="actions">
+		<div class="delete">Delete</div>
+		<div class="expand">Expand</div>
+	</div>
+	<header>[name]</header>
+</div>
+</script>
+
+<script id="list-detail-template" type="text/template">
+<div class="list-detail" data-id="[id]">
+	<header>
+		<div class="actions"><div class="close">Close</div></div>
+		<h3 class="title">[name]</h3>
+	</header>
+	<section class="items"></section>
+</div>
+</script>
+
+<script id="list-item-template" type="text/template">
+<div class="list-item" data-id="[id]">
+	<div class="actions">
+		<div class="tick">Tick</div>
+		<div class="comments">Comments</div>
+		<div class="dragme list-item-draggable">Grab</div>
+	</div>
+	<content>[name]</content>
+	<section class="comments"></section>
+</div>
+</script>
+</body>
+</html>
