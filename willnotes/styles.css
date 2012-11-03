@@ -101,6 +101,23 @@ input, select {
     vertical-align:middle;
 }
 
+/* Lightbox */
+.lbPopup {
+	max-width: 95%;
+	box-shadow: rgba(0,0,0,.6) 0px 2px 12px;
+	-webkit-transition: all 200ms;
+	-moz-transition: all 200ms;
+	transition: all 200ms;
+}
+.lbPopup:hover {
+	box-shadow: rgba(0,0,0,1) 0px 2px 12px 2px;
+}
+
+.lbPopup > img {
+	cursor: pointer;
+	display: block;
+}
+
 /* Clearfix */
 .clearfix:after {
     visibility: hidden;
@@ -116,6 +133,9 @@ input, select {
 /* Cool box-sizing - works fine >= IE8 */
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
+/* When has anybody *wanted* images to overflow? */
+img { max-width: 100%; height: auto; }
+
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.8em;
@@ -124,10 +144,11 @@ body {
     padding-bottom: 50px;
 }
 
-@import url(http://fonts.googleapis.com/css?family=Ceviche+One);
-
 h1 {
-	font-family: 'Ceviche One', cursive;
+	font-family: Impact, Charcoal, sans-serif;
+	font-weight: normal;
+	text-transform: uppercase;
+	letter-spacing: 6px;
 	font-size: 20px;
 	color: #fff;
     display: inline-block;
@@ -148,22 +169,6 @@ body > header {
 	background: -ms-linear-gradient(top,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(52,120,193,1) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#3478c1',GradientType=0 ); /* IE6-9 */
-}
-
-body > footer {
-	color: #fff;
-	position: fixed;
-	width: 100%;
-	bottom: 0;
-	padding: 5px 50px;
-	background: rgb(125,126,125);
-	background: -moz-linear-gradient(top,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(100%,rgba(14,14,14,1)));
-	background: -webkit-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
-	background: -o-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
-	background: -ms-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
-	background: linear-gradient(to bottom,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 );
 }
 
 body > header > * {
@@ -193,6 +198,7 @@ body > header > * {
     border-radius: 5px;
     background: #fff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	overflow: hidden; /* purely for webkit's rounded corner clipping */
 }
 
 #side-group {
@@ -334,43 +340,12 @@ body > header > * {
     cursor: pointer;
 }
 
-.actions .close {
-    background: url(gfx/close.png) no-repeat center center;
-    background-size: 20px 20px;
-}
-
-.actions .dragme {
-    background: url(gfx/cursor_drag_hand.png) no-repeat center center;
-    background-size: 20px 20px;
-}
-
-.actions .tick {
-    background: url(gfx/tick_unticked.png) no-repeat center center;
-    background-size: 16px 16px;
-}
-
-.ticked .actions .tick {
-    background: url(gfx/tick_ticked.png) no-repeat center center;
-}
-
 .actions .comments {
-    background: url(gfx/comments.png) no-repeat center center;
-    background-size: 20px 20px;
     opacity: 0.5;
 }
 
 .actions .comments:hover {
     opacity: 1;
-}
-
-.actions .delete {
-    background: url(gfx/delete.png) no-repeat center center;
-    background-size: 20px 20px;
-}
-
-.actions .expand {
-    background: url(gfx/expand_item.png) no-repeat center center;
-    background-size: 20px 20px;
 }
 
 .ui-draggable {

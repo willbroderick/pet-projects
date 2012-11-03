@@ -185,7 +185,7 @@ function listEngine(listListingSelector, listCanvasSelector) {
 		var listHTML = templateHTML;
 		//If the name is just an image URL, just display an image tag
 		if(item.name.match(/^http.*\.(jpg|png|gif)/ig)) {
-			listHTML = listHTML.replace('[name]', '<img class="ext-img" src="' + item.name + '"/>');
+			listHTML = listHTML.replace('[name]', '<a href="#" class="lightbox"><img class="ext-img" src="' + item.name + '"/></a>');
 		} else {
 			listHTML = listHTML.replace('[name]', item.name);
 		}
@@ -214,6 +214,15 @@ function listEngine(listListingSelector, listCanvasSelector) {
 
 //DOM ready
 $(function(){
+	//Lightbox
+	$(document).on('click', 'a.lightbox', function() {
+		//Create object to lightbox
+		var $lbImg = $('<img>').attr('src', $(this).children('img').attr('src')).addClass('close');
+		var $lbCont = $('<div>').addClass('lbPopup');
+		$lbCont.append($lbImg).lightbox_me();
+		return false;
+	});
+
 	window.listManager = new listEngine('#list-listing content', '#list-canvas content');
 	window.listManager.loadListData('listfile1');
 

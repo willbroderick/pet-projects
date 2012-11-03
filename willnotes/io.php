@@ -1,10 +1,19 @@
 <?php
 
+/*
+TODO:
+- User login, secure password, required for accessing data
+- Take a versions number when saving - if conflict, return error code & json. Frontend can merge.
+- User subscribes to personal set of lists, need quick UI for subscribing to public lists
+- Make occasional backup, daily copy (if different) put in a zip. Maybe just the diff, to save space.
+
+*/
+
 function filenameToPath($name) {
-	return $filepath = 'listfiles/'.$name.'.json';
+	return $filepath = 'data/'.$name.'.json';
 }
 
-//Read notes file and relay it back
+//Read: read json from notes file and output it
 if(isset($_GET['a']) && $_GET['a'] == 'read') {
 	$filepath = filenameToPath($_GET['file']);
 	if (!file_exists($filepath)) {
@@ -27,6 +36,7 @@ if(isset($_GET['a']) && $_GET['a'] == 'read') {
 	exit;
 }
 
+//Save: overwrite json file with sent data
 if(isset($_POST['a']) && $_POST['a'] == 'save') {
 	$filepath = filenameToPath($_POST['file']);
 	if(file_exists($filepath)) {

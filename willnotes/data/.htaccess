@@ -1,0 +1,3 @@
+# Just block all files in here - this is where the important stuff is kept!
+Order Deny,Allow
+Deny from All
