@@ -2,8 +2,8 @@
 
 /*
 TODO:
-- User login, secure password, required for accessing data
 - Take a versions number when saving - if conflict, return error code & json. Frontend can merge.
+- User login, secure password, required for accessing data
 - User subscribes to personal set of lists, need quick UI for subscribing to public lists
 - Make occasional backup, daily copy (if different) put in a zip. Maybe just the diff, to save space.
 
