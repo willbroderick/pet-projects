@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="gfx.css"/>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+	<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/sha256.js"></script>
 	<script type="text/javascript" src="jquery-ui-1.8.24.custom.min.js"></script>
 	<script type="text/javascript" src="jquery.textarea-expander.js"></script>
 	<script type="text/javascript" src="jquery.lightbox_me.js"></script>
@@ -30,6 +31,7 @@
 	<header>
 		<h1>Willnotes</h1>
 		<div id="destroybox">DESTROY</div>
+		<div id="status-text"></div>
 	</header>
 	<div id="side-group">
 		<section id="item-new">
@@ -37,6 +39,9 @@
 			<content>
 				<div class="actions"><div class="dragme new-list-item-draggable">Drag me to an input</div></div>
 				<textarea id="newitemtext" class="expand2-200"></textarea>
+				<form id="file-upload-form" action="upload.php" method="post" enctype="multipart/form-data">
+					<input type="file" id="file-upload" name="file-upload[]" multiple />
+				</form>
 			</content>
 		</section>
 		<section id="list-listing">
@@ -52,6 +57,19 @@
 		<header>Opened lists</header>
 		<content></content>
 	</section>
+
+<script id="login-form-template" type="text/template">
+<div id="login-form" class="popup-form form">
+	<div class="message">I demand from you, these answers two.</div>
+	<div class="input-row">
+		<label>Username</label><input type="text" id="username" />
+	</div>
+	<div class="input-row">
+		<label>Password</label><input type="password" id="password" />
+	</div>
+	<a class="button" href="#">Go</a>
+</div>
+</script>
 
 <script id="list-template" type="text/template">
 <div class="list" data-id="[id]">

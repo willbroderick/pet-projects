@@ -8,6 +8,7 @@ function listEngine(listListingSelector, listCanvasSelector) {
 	this.listCanvasEl = $(listCanvasSelector);
 	this.currentListFilename = '';
 	this.currentListData = {"lists":[]};
+	this.logon_credentials = {};
 	
 	this.initEvents = function(){
 		if(typeof($('body').data('listEngineEventsAdded')) == 'undefined') {
@@ -84,7 +85,7 @@ function listEngine(listListingSelector, listCanvasSelector) {
 
 			this.bindImpermanentDragDropEvents();
 		}
-	}
+	};
 
 	//Drag/drop events using jQuery UI. Must be bound every time the element is added.
 	this.bindImpermanentDragDropEvents = function(){
@@ -129,22 +130,39 @@ function listEngine(listListingSelector, listCanvasSelector) {
 
 		//Delete/move list item
 		$('#list-canvas .list-detail .list-item .dragme').draggable({revert: true});
-	}
+	};
 
 	this.initEvents();
 
 	this.loadListData = function(listFilename){
+		this.currentListFilename = listFilename;
+
 		//Fetch data file using Ajax
 		var thisRef = this;
-		var jqxhr = $.getJSON('io.php?a=read&file=' + listFilename, function(data) {
-			thisRef.currentListFilename = listFilename;
-			thisRef.currentListData = data;
-			thisRef.reloadDisplay();
-		}).error(function() {
-			alert(listFilename + ' not found - current list file remains open');
+		$.post('io.php', { 
+				'a':'read', 
+				'file': listFilename, 
+				'logon_username': this.logon_credentials.username,
+				'logon_expiry': this.logon_credentials.expiry,
+				'logon_token': this.logon_credentials.token
+			}, function(data) {
+			if(typeof(data.status) != 'undefined' && data.status == 'ERROR') {
+				alert(data.message);
+			} else {
+				if(typeof(data.lists) == 'undefined') {
+					console.log('Lists not found on returned file. Attempt JSON parse.');
+					thisRef.currentListData = JSON.parse(data);
+					console.log(typeof(thisRef.currentListData.lists)? 'Lists found' : 'Lists still not found - data broken');
+				} else {
+					thisRef.currentListData = data;
+				}
+				thisRef.reloadDisplay();
+			}
+		}, 'json').error(function() {
+			alert(listFilename + ' not found');
 			thisRef.currentListData = {};
 		});
-	}
+	};
 
 	this.reloadDisplay = function(reloadListing, reloadCanvas){
 		if(typeof(reloadListing) == 'undefined' || reloadListing) {
@@ -179,7 +197,7 @@ function listEngine(listListingSelector, listCanvasSelector) {
 			}
 		}
 		this.bindImpermanentDragDropEvents();
-	}
+	};
 
 	this.elFromTemplate = function(templateHTML, id, item) {
 		var listHTML = templateHTML;
@@ -191,29 +209,144 @@ function listEngine(listListingSelector, listCanvasSelector) {
 		}
 		listHTML = listHTML.replace('[id]', id);
 		return $(listHTML);
-	}
+	};
+
+	/*
+	TODO: CHANGE how updates happen completely. We need to have delta updates.
+	When you add a row, we send {add row, row id, row content} and the response is the whole updated JSON.
+	When we delete, we just send {delete, row id} and again receive the whole JSON.
+
+	This reduces the risk of the client corrupting the JSON and everything breaking!!
+	*/
 
 	this.saveListData = function() {
-		//Save data file using Ajax. Do not trigger 2 saves within 10s. Think of the CC web connection.
-
-		var now = new Date();
-		var ticks = now.getTime();
-		this.currentListData.lastModified = ticks;
+		//Save data file using Ajax.
+		//TODO: Do not trigger 2 saves within 10s. Think of the CC web connection.
 
 		var dataStringified = JSON.stringify(this.currentListData);
 
-		$.post('io.php', {'a':'save', 'file':this.currentListFilename, 'data':dataStringified}, function(data){
-			console.log('Saved');
-		}).error(function(){
+		$.post('io.php', {
+			'a':'save',
+			'file':this.currentListFilename,
+			'data':dataStringified,
+			'logon_username': this.logon_credentials.username,
+			'logon_expiry': this.logon_credentials.expiry,
+			'logon_token': this.logon_credentials.token
+		}, function(data){
+			if(data.status == 'ERROR') {
+				alert(data.message);
+				window.location = window.location + ''; //Reload page to force another login!
+			} else if(data.status == 'CONFLICT') {
+				alert('Conflict! Somebody updated the file before the change you just made. Loading their copy.');
+				window.listManager.loadListData(window.listManager.currentListFilename);
+			} else {
+				window.listManager.currentListData['lastModified'] = data.lastModified;
+				console.log('Saved');
+			}
+		}, 'json').error(function(){
 			console.log('Save failed under mysterious circumstances');
 		});
-	}
+	};
+
+	this.checkFileForUpdates = function() {
+		$.post('io.php', {
+			'a':'last-modified',
+			'file':this.currentListFilename,
+			'logon_username': this.logon_credentials.username,
+			'logon_expiry': this.logon_credentials.expiry,
+			'logon_token': this.logon_credentials.token
+		}, function(data){
+			if(typeof(data.status) != 'undefined' && data.status == 'ERROR') {
+				alert(data.message);
+			} else {
+				if(data.lastModified > window.listManager.currentListData.lastModified) {
+					//alert('File has changed! Showing updated file.');
+					//Display warning in a console log in bottom right that an updated has occurred?
+					window.listManager.loadListData(window.listManager.currentListFilename);
+				}
+			}
+		}, 'json').error(function(){
+			console.log('File update check failed under mysterious circumstances.');
+		});
+	};
+
+	this.setLogonCredentials = function(logon_cred){
+		this.logon_credentials = logon_cred;
+	};
+
+	this.updateStatusText = function(){
+		var status_text = '';
+		var d = new Date();
+		if(typeof(this.logon_credentials) == 'undefined' || typeof(this.logon_credentials.username) == 'undefined') {
+			status_text += 'Not logged in.<br />';
+		} else {
+			status_text += 'Logged in as "'+this.logon_credentials.username+'"<br />';
+
+			//You will be logged in for X more minutes
+			var time_secs_since_epoch = d.getTime() / 1000;
+			if(this.logon_credentials.expiry < time_secs_since_epoch) {
+				status_text += 'Your session has expired.<br />';
+			} else {
+				status_text += 'You will be logged out in '+Math.round((this.logon_credentials.expiry - time_secs_since_epoch)/60)+' minutes<br />';
+				
+				//Logged in? Do regular file updated checks
+				this.checkFileForUpdates();
+			}
+		}
+		
+		status_text += 'Updated: '+d.getHours() + ':'+d.getMinutes()+':'+d.getSeconds();
+		$('#status-text').html(status_text);
+
+		window.setTimeout('window.listManager.updateStatusText()', 10000);
+	};
 }
-
-
 
 //DOM ready
 $(function(){
+	//Ask for username and password before anything. These need to be sent & validated upon every request.
+	var $login_form = $($('#login-form-template').html());
+	$login_form.lightbox_me();
+	$(document).on('click', '#login-form a', function(){
+		//Set part of key kept here
+		var logon_username = $('#login-form #username').val();
+
+		//Send of details to server
+		$.post('authenticate.php', {
+				username : logon_username,
+				password : $('#login-form #password').val()
+			}, function(data){
+			//Success
+			var response = false;
+			var json_parsed = false;
+			try {
+				response = JSON.parse(data);
+				json_parsed = true;
+			} catch(err) {
+			}
+			if(json_parsed) {
+				if(response.status == 'OK') {
+					var logon_expiry = response.expiry;
+					var logon_token = response.token;
+					window.listManager.setLogonCredentials({
+						username: logon_username,
+						expiry: logon_expiry,
+						token: logon_token
+					});
+					window.listManager.loadListData('listfile1');
+					$login_form.trigger('close');
+				} else {
+					alert(response.message);
+				}
+			} else {
+				alert('Response from server was not valid: ' + data);
+			}
+		}).error(function(){
+			//Fail
+			alert('Error communicating with secure logon service. Please try again.');
+		});
+		return false;
+	});
+
 	//Lightbox
 	$(document).on('click', 'a.lightbox', function() {
 		//Create object to lightbox
@@ -223,9 +356,38 @@ $(function(){
 		return false;
 	});
 
+	//Create big JS manager
 	window.listManager = new listEngine('#list-listing content', '#list-canvas content');
-	window.listManager.loadListData('listfile1');
 
+	//Start showing status updates
+	window.listManager.updateStatusText();
+
+	//AJAX file uploader
+    if (window.FormData && window.FileReader) {
+        $(document).on('change', '#file-upload-form #file-upload', function(event){
+        	$('#item-new').css('opacity', 0.3); //Notify user upload is occurring
+        	var formdata = new FormData();
+			var reader = new FileReader();
+			var file = event.target.files[0];
+			reader.readAsDataURL(file);
+			formdata.append("files[]", file);
+			$.ajax({
+				url: 'upload.php',
+				type: 'POST',
+				data: formdata,
+				processData: false,
+				contentType: false,
+				success: function (res) {
+					$('#newitemtext').html(res);
+				},
+				complete: function() {
+					$('#item-new').css('opacity', 1); //Notify user upload complete
+				}
+			});
+        });
+    } else {
+    	$('#file-upload-form').html('Browser does not support AJAX file uploads');
+    }
 });
 
 
