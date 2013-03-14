@@ -1,0 +1,92 @@
+/* Willery plugin! */
+#willery-modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 6000;
+}
+
+#willery-modal .exit {
+    font: 40px/40px Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    background: #000;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    opacity: 0.7;
+}
+
+#willery-modal .exit:hover {
+    opacity: 1;
+}
+    
+#willery-modal-thumbs {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 29px 0 0 17px;
+    padding: 0 16px 0 0;/* in case of scroll */
+    z-index: 5;
+    max-height: 100%;
+    overflow: auto;
+}
+
+#willery-modal-thumbs li {
+    list-style: none;
+    position: relative;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+#willery-modal-thumbs li a {
+    display: block;
+}
+
+#willery-modal-thumbs li a img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#willery-modal-thumbs li a .fluff {
+    background: rgb(235, 75, 59);
+    background: rgba(235, 75, 59, 0.8);
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity 100ms;
+    -moz-transition: opacity 100ms;
+    transition: opacity 100ms;
+}
+
+#willery-modal-thumbs li a:hover .fluff {
+    opacity: 1;
+}
+
+#willery-modal-thumbs li a .fluff span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -7px 0 0 -7px;
+}
+
+#willery-modal-image-container {
+    overflow: hidden;
+    margin: 0 17px 0 134px;
+    height: 100%;
+}
