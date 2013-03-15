@@ -1,9 +1,9 @@
 /*
- *	jQuery Willousel 1.0.0
+ *  jQuery Willousel 1.0.0
  *
  *  Published under both the MIT license and Apache license version 2.0
  *
- *	Copyright (c) 2013 Will Broderick
+ *  Copyright (c) 2013 Will Broderick
  */
 
 (function($) {
@@ -50,7 +50,7 @@
     }
     
     $.fn.willousel = function(paramOpts){
-        var options = { currentItem: 0, transitionSpeed: 150, useAdvancedCSSTransforms: true };
+        var options = { currentItem: 0, transitionSpeed: 150, useAdvancedCSSTransforms: true, prependControls: false };
         $.extend(options, paramOpts);
         
         return $(this).each(function(){
@@ -62,10 +62,18 @@
             }).on('click', '.control-next', function(){
                 $localThis.trigger('nextitem');
                 return false;
-            }).find('.controls')
-                .append('<a class="control-prev" href="#">Previous</a>')
+            });
+        if($localThis.find('.controls').length == 0) {
+        if(options.prependControls) {
+            $localThis.prepend('<div class="controls" />');
+        } else {
+            $localThis.append('<div class="controls" />');
+        }
+        }
+            $localThis.find('.controls').append('<a class="control-prev" href="#">Previous</a>')
                 .append('<a class="control-next" href="#">Next</a>');
             
+
             //Create viewport & add styles
             var $localItemsCont = $localThis.children('.items').css({
                 margin: 0,

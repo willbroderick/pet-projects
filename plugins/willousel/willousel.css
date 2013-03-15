@@ -1,0 +1,50 @@
+.willousel .items {
+    display: none;
+}
+
+.willousel.willousel-loaded .items {
+    display: block;
+}
+
+.willousel .items .item img {
+	width: auto;
+	height: 100%;
+}
+
+.willousel .controls {
+    height: 44px;
+    margin-top: -44px;
+    position: relative;
+    z-index: 10;
+}
+
+.willousel .controls .control-prev,
+.willousel .controls .control-next {
+    background: url('willousel-nav.png') no-repeat left top;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    height: 0;
+    padding-top: 44px;
+    width: 58px;
+    opacity: 0.4;
+}
+
+.willousel .controls .control-prev {
+    right: 50%;
+}
+
+.willousel .controls .control-next {
+    background-position: 100% top;
+    left: 50%;
+}
+
+.willousel:hover .controls .control-prev,
+.willousel:hover .controls .control-next {
+    opacity: 0.9;
+}
+
+.willousel:hover .controls .control-prev:hover,
+.willousel:hover .controls .control-next:hover {
+    opacity: 1;
+}
