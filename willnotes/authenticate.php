@@ -5,7 +5,7 @@
 
 function do_login($username, $password) {
 	$login_response = false;
-	if($username == 'canvas' && $password == 'fodder66') {
+	if($username == 'canvas' && $password == 'testing123') {
 		$expiry = time() + 24 * 60 * 60; //Log in for 24 hours
 		return array( 'expiry' => $expiry, 'token' => hash('sha256', 'saltynuts'.$username.$expiry) );
 	}
