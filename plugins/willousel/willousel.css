@@ -48,3 +48,12 @@
 .willousel:hover .controls .control-next:hover {
     opacity: 1;
 }
+
+/* If using for Instagram */
+.willousel.willstagram .items .item {
+    height: 220px;
+}
+
+.willousel.willstagram .items .item .desc {
+    display: none;
+}

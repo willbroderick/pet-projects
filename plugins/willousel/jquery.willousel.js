@@ -1,7 +1,50 @@
 /*
+* debouncedresize: special jQuery event that happens once after a window resize
+*
+* latest version and complete README available on Github:
+* https://github.com/louisremi/jquery-smartresize/blob/master/jquery.debouncedresize.js
+*
+* Copyright 2011 @louis_remi
+* Licensed under the MIT license.
+*/
+(function($) {
+    var $event = $.event,
+    $special,
+    resizeTimeout;
+    
+    $special = $event.special.debouncedresize = {
+        setup: function() {
+            $( this ).on( "resize", $special.handler );
+        },
+        teardown: function() {
+            $( this ).off( "resize", $special.handler );
+        },
+        handler: function( event, execAsap ) {
+            // Save the context
+            var context = this,
+                args = arguments,
+                dispatch = function() {
+                    // set correct event type
+                    event.type = "debouncedresize";
+                    $event.dispatch.apply( context, args );
+                };
+    
+            if ( resizeTimeout ) {
+                clearTimeout( resizeTimeout );
+            }
+    
+            execAsap ?
+                dispatch() :
+                resizeTimeout = setTimeout( dispatch, $special.threshold );
+        },
+        threshold: 400
+    };
+})(jQuery);
+
+/*
  *  jQuery Willousel 1.0.0
  *
- *  Published under both the MIT license and Apache license version 2.0
+ *  Licensed under the MIT license
  *
  *  Copyright (c) 2013 Will Broderick
  */
@@ -50,11 +93,15 @@
     }
     
     $.fn.willousel = function(paramOpts){
-        var options = { currentItem: 0, transitionSpeed: 150, useAdvancedCSSTransforms: true, prependControls: false };
+        var options = { currentItem: 0, transitionSpeed: 150, useAdvancedCSSTransforms: true };
         $.extend(options, paramOpts);
         
         return $(this).each(function(){
             var $localThis = $(this);
+            
+            //Don't do anything if we don't have any children
+            if($localThis.children('.items').children().length == 0) return;
+            
             //Add nav buttons
             $localThis.on('click', '.control-prev', function(){
                 $localThis.trigger('previtem');
@@ -63,17 +110,12 @@
                 $localThis.trigger('nextitem');
                 return false;
             });
-        if($localThis.find('.controls').length == 0) {
-        if(options.prependControls) {
-            $localThis.prepend('<div class="controls" />');
-        } else {
-            $localThis.append('<div class="controls" />');
-        }
-        }
-            $localThis.find('.controls').append('<a class="control-prev" href="#">Previous</a>')
-                .append('<a class="control-next" href="#">Next</a>');
+            var $controls = $localThis.find('.controls');
+            if($controls.length == 0) {
+                $controls = $('<div class="controls"></div>').appendTo($localThis);
+            }
+            $controls.append('<a class="control-prev" href="#">Previous</a>').append('<a class="control-next" href="#">Next</a>');
             
-
             //Create viewport & add styles
             var $localItemsCont = $localThis.children('.items').css({
                 margin: 0,
@@ -107,7 +149,7 @@
             $($localItems[options.currentItem]).addClass('active-item');
             
             //Re-evaluate everything on resize
-            $(window).resize(function(){
+            $(window).on('debouncedresize', function() {
                 $localThis.trigger('refreshitemdimensions').trigger('refreshposition');
             });
             
@@ -145,9 +187,9 @@
                 }
                 
                 //Calculate width of all current items in viewport
-                widthOfAllItems = 0;
+                widthOfAllItems = 10; //Start with an offset, just for rounding errors etc. It doesn't matter if this is too large
                 $localItems.each(function(){
-                    widthOfAllItems += $(this).width();
+                    widthOfAllItems += $(this).outerWidth();
                 });
                 
                 //And set the dimensions of the viewport to match (taking into account the offset)
@@ -231,3 +273,38 @@
         });
     };
 })(jQuery);
+
+
+$(function(){
+  //Normal willousels
+  $('.willousel:not(.willstagram)').willousel();
+  
+  //Willousel of Instagram images
+  //Add to page: <div class="willousel willstagram" data-user_id="471995990" data-client_id="a71d3f8902ef4fd38a526f7bc4a6ee00"></div>
+  //only need to provide access_token if necessary
+  $('.willousel.willstagram').each(function(){
+    var user_id = $(this).data('user_id');
+    var client_id = $(this).data('client_id');
+    var access_token = $(this).data('access_token');
+    var $willousel = $(this);
+    $.ajax({
+      type: "GET",
+      dataType: "jsonp",
+      cache: false,
+      url: 'https://api.instagram.com/v1/users/' + user_id + '/media/recent?client_id=' + client_id + (typeof access_token == 'undefined'? '' : ('&access_token='+access_token)),
+      success: function(res) {
+        if(typeof res.data != 'undefined') {
+          var $itemContainer = $('<ul class="items">').appendTo($willousel);
+          var limit = Math.min(20, res.data.length);
+          for(var i = 0; i < limit; i++) {
+            var photo_url = res.data[i].images.low_resolution.url;
+            var link = res.data[i].link;
+            var caption = res.data[i].caption != null ? res.data[i].caption.text : '';
+            $itemContainer.append($('<li />').append('<div class="item"><a target="_blank" href="' + link + '"><img src="' + photo_url + '" /></a><div class="desc">' + caption + '</div></div>'));
+          }
+          $willousel.willousel();
+        }
+      }
+    });
+  });
+});
