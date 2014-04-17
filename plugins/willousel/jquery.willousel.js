@@ -282,12 +282,15 @@ $(function(){
     var user_id = $(this).data('user_id');
     var client_id = $(this).data('client_id');
     var access_token = $(this).data('access_token');
+    var count = $(this).data('count');
     var $willstagram = $(this);
     $.ajax({
       type: "GET",
       dataType: "jsonp",
       cache: false,
-      url: 'https://api.instagram.com/v1/users/'+user_id+'/media/recent?client_id='+client_id + (typeof access_token == 'undefined'? '' : ('&access_token='+access_token)),
+      url: 'https://api.instagram.com/v1/users/' + user_id + '/media/recent?client_id=' + client_id
+        + (typeof access_token == 'undefined'? '' : ('&access_token='+access_token))
+        + (typeof count == 'undefined'? '' : ('&count='+count)),
       success: function(res) {
         if(typeof res.data != 'undefined') {
           var $itemContainer = $('<ul class="items">').appendTo($willstagram);
