@@ -274,37 +274,38 @@
     };
 })(jQuery);
 
-
 $(function(){
-  //Normal willousels
-  $('.willousel:not(.willstagram)').willousel();
-  
-  //Willousel of Instagram images
+  //Gallery of instagram images
   //Add to page: <div class="willousel willstagram" data-user_id="471995990" data-client_id="a71d3f8902ef4fd38a526f7bc4a6ee00"></div>
   //only need to provide access_token if necessary
-  $('.willousel.willstagram').each(function(){
+  $('.willstagram').each(function(){
     var user_id = $(this).data('user_id');
     var client_id = $(this).data('client_id');
     var access_token = $(this).data('access_token');
-    var $willousel = $(this);
+    var $willstagram = $(this);
     $.ajax({
       type: "GET",
       dataType: "jsonp",
       cache: false,
-      url: 'https://api.instagram.com/v1/users/' + user_id + '/media/recent?client_id=' + client_id + (typeof access_token == 'undefined'? '' : ('&access_token='+access_token)),
+      url: 'https://api.instagram.com/v1/users/'+user_id+'/media/recent?client_id='+client_id + (typeof access_token == 'undefined'? '' : ('&access_token='+access_token)),
       success: function(res) {
         if(typeof res.data != 'undefined') {
-          var $itemContainer = $('<ul class="items">').appendTo($willousel);
+          var $itemContainer = $('<ul class="items">').appendTo($willstagram);
           var limit = Math.min(20, res.data.length);
           for(var i = 0; i < limit; i++) {
             var photo_url = res.data[i].images.low_resolution.url;
             var link = res.data[i].link;
             var caption = res.data[i].caption != null ? res.data[i].caption.text : '';
-            $itemContainer.append($('<li />').append('<div class="item"><a target="_blank" href="' + link + '"><img src="' + photo_url + '" /></a><div class="desc">' + caption + '</div></div>'));
+            $itemContainer.append($('<li />').append('<div class="item"><a target="_blank" href="'+link+'"><img src="'+photo_url+'" /></a><div class="desc">'+caption+'</div></div>'));
           }
-          $willousel.willousel();
+          if($willstagram.hasClass('willousel')){
+            $willstagram.willousel();
+          }
         }
       }
     });
   });
+
+  //Willousels
+  $('.willousel:not(.willstagram)').willousel();
 });
